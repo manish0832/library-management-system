@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Return Book</title>
+  <title>Edit Book</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-                  url('https://img.freepik.com/premium-photo/sexy-beauty-with-beautiful-smile-works-local-library-girl-library-concept_359031-21308.jpg') 
+                  url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUOTweAKxQJFhd6IoiluaAypK8-16GSZHVSQ&s')
                   no-repeat center center fixed;
       background-size: cover;
       color: white;
@@ -67,15 +67,34 @@
 </head>
 <body>
   <div class="card">
-    <h2 class="text-white text-center" title="Return a previously issued book">📥 Return Book</h2>
-    <form action="/return" method="POST">
+    <h2 class="text-white text-center" title="Update the book details">✏️ Edit Book Details</h2>
+    <form action="/edit/{{ book[0] }}" method="POST">
       <div class="form-group">
-        <label title="Enter the ID of the book being returned">Book ID</label>
-        <input type="text" name="book_id" class="form-control" required>
+        <label title="Book ID (not editable)">ID</label>
+        <input type="text" name="id" value="{{ book[0] }}" class="form-control" readonly>
+      </div>
+      <div class="form-group">
+        <label title="Update book title">Title</label>
+        <input type="text" name="title" value="{{ book[1] }}" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label title="Update author's name">Author</label>
+        <input type="text" name="author" value="{{ book[2] }}" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label title="Update quantity">Quantity</label>
+        <input type="number" name="quantity" value="{{ book[3] }}" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label title="Change book status">Status</label>
+        <select name="status" class="form-control">
+          <option value="Available" {% if book[4] == 'Available' %}selected{% endif %}>Available</option>
+          <option value="Issued" {% if book[4] == 'Issued' %}selected{% endif %}>Issued</option>
+        </select>
       </div>
       <div class="text-center">
-        <button type="submit" class="btn btn-success" title="Submit return request">Return</button>
-        <a href="/" class="btn btn-light" title="Go back to homepage">Cancel</a>
+        <button type="submit" class="btn btn-primary" title="Save changes">Save Changes</button>
+        <a href="/view" class="btn btn-light" title="Cancel editing">Cancel</a>
       </div>
     </form>
   </div>

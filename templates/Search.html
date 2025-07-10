@@ -2,102 +2,85 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Search Books</title>
+  <title>Search Book</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
-      background: linear-gradient(rgba(195, 119, 185, 0.6), rgba(0, 0, 0, 0.6)),
-        url('https://images.unsplash.com/photo-1607082352258-99857d6f4e55?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                  url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBxxjb8fMaHa28S293_Zx_uF_BYN5vAz9BKrqGDMO3Zgt_bUtr28X5MYP7-LChu0tYPtE&usqp=CAU') 
+                  no-repeat center center fixed;
       background-size: cover;
-      color: #fff;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: white;
     }
-    .card, .table {
-      background-color: rgba(205, 199, 199, 0.95);
-      border-radius: 10px;
-      color: #333;
-    }
-    .form-inline input[type="text"] {
-      width: 300px;
+    .card {
+      margin: 100px auto;
+      max-width: 600px;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      animation: fadeIn 1.2s ease-in-out;
     }
     h2 {
-      color: #fff;
-      text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+      font-weight: 600;
+      margin-bottom: 30px;
+      text-shadow: 0 0 10px rgba(255,255,255,0.5);
+      transition: transform 0.3s ease;
     }
-    .img-banner {
-      width: 100%;
-      max-height: 300px;
-      object-fit: cover;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    }
-    .image-gallery {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      margin-bottom: 25px;
-      flex-wrap: wrap;
-    }
-    .image-gallery img {
-      width: 180px;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(5, 3, 3, 0.3);
-      transition: transform 0.3s;
-    }
-    .image-gallery img:hover {
+    h2:hover {
       transform: scale(1.05);
+    }
+    label {
+      font-weight: 500;
+      text-shadow: 0 0 5px rgba(255,255,255,0.3);
+    }
+    .form-control {
+      border-radius: 10px;
+    }
+    .btn {
+      border-radius: 25px;
+      padding: 10px 20px;
+      font-size: 1.1rem;
+      margin: 5px;
+      transition: all 0.3s ease;
+    }
+    .btn:hover {
+      transform: scale(1.05);
+      opacity: 0.9;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    footer {
+      position: fixed;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.6);
     }
   </style>
 </head>
 <body>
-<div class="container mt-5">
-  <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1350&q=80" alt="Library Banner" class="img-banner">
-
-  <div class="image-gallery">
-    <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=800&q=80" alt="Bookshelf">
-    <img src="https://images.unsplash.com/photo-1553729459-efe14ef6055d?auto=format&fit=crop&w=800&q=80" alt="Study Desk">
-    <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=800&q=80" alt="Open Book">
-  </div>
-
-  <div class="card p-4 shadow-lg">
-    <h2>Search Books</h2>
-    <form method="get" action="/search" class="form-inline mb-3">
-      <input type="text" name="q" class="form-control mr-2" placeholder="Enter title or author" value="{{ query }}" required>
-      <button type="submit" class="btn btn-success">Search</button>
-      <a href="/" class="btn btn-secondary ml-2">Home</a>
+  <div class="card">
+    <h2 class="text-white text-center" title="Search for a book by title or author">🔍 Search Book</h2>
+    <form action="/search" method="POST">
+      <div class="form-group">
+        <label title="Enter book title or author to search">Search by Title or Author</label>
+        <input type="text" name="query" class="form-control" required>
+      </div>
+      <div class="text-center">
+        <button type="submit" class="btn btn-success" title="Click to search">Search</button>
+        <a href="/" class="btn btn-light" title="Cancel and return to homepage">Cancel</a>
+      </div>
     </form>
-
-    {% if books %}
-      <table class="table table-striped mt-3">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Quantity</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for book in books %}
-            <tr>
-              <td>{{ book[0] }}</td>
-              <td>{{ book[1] }}</td>
-              <td>{{ book[2] }}</td>
-              <td>{{ book[3] }}</td>
-              <td>{{ book[4] }}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    {% elif query %}
-      <p class="text-danger">No books found for '{{ query }}'.</p>
-    {% endif %}
   </div>
-</div>
+  <footer>
+    &copy; 2025 Library Management System | Made with ❤️ by Manish Saini
+  </footer>
 </body>
 </html>

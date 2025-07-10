@@ -2,80 +2,104 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Add Book</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
-      background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(16, 14, 14, 0.6)),
-        url('https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                  url('https://rapi.pixai.art/img/media/384686761749415677/orig') 
+                  no-repeat center center fixed;
       background-size: cover;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: #fff;
+      color: white;
     }
     .card {
-      animation: slideFadeIn 0.8s ease-in-out;
-      background-color: rgba(67, 150, 171, 0.91);
-      border-radius: 15px;
+      margin: 100px auto;
       max-width: 600px;
-      margin: auto;
-    }
-    @keyframes slideFadeIn {
-      from {
-        transform: translateY(40px);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
-    .form-control:focus {
-      box-shadow: 0 0 10px rgba(15, 117, 226, 0.6);
-      transition: 0.3s;
-    }
-    button.btn-primary {
-      transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-    button.btn-primary:hover {
-      background-color:rgb(134, 231, 22);
-      transform: scale(1.05);
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      animation: fadeIn 1.2s ease-in-out;
     }
     h2 {
-      color: #343a40;
+      font-weight: 600;
+      margin-bottom: 30px;
+      text-shadow: 0 0 10px rgba(255,255,255,0.5);
+      transition: transform 0.3s ease;
+    }
+    h2:hover {
+      transform: scale(1.05);
     }
     label {
-      font-weight: bold;
+      font-weight: 500;
+      text-shadow: 0 0 5px rgba(255,255,255,0.3);
+    }
+    .form-control {
+      border-radius: 10px;
+    }
+    .btn {
+      border-radius: 25px;
+      padding: 10px 20px;
+      font-size: 1.1rem;
+      margin: 5px;
+      transition: all 0.3s ease;
+    }
+    .btn:hover {
+      transform: scale(1.05);
+      opacity: 0.9;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    footer {
+      position: fixed;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.6);
     }
   </style>
 </head>
 <body>
-<div class="container mt-5">
-  <div class="card p-4 shadow-lg">
-    <h2 class="mb-4 text-center">📘 Add New Book</h2>
-    <form action="/add" method="post">
+  <div class="card">
+    <h2 class="text-white text-center" title="Enter details of the book to add it to the library">➕ Add New Book</h2>
+    <form action="/add" method="POST">
       <div class="form-group">
-        <label for="id">Book ID</label>
-        <input type="text" class="form-control" name="id" required>
+        <label title="Enter unique book ID">ID</label>
+        <input type="text" name="id" class="form-control" required>
       </div>
       <div class="form-group">
-        <label for="title">Title</label>
-        <input type="text" class="form-control" name="title" required>
+        <label title="Enter book title">Title</label>
+        <input type="text" name="title" class="form-control" required>
       </div>
       <div class="form-group">
-        <label for="author">Author</label>
-        <input type="text" class="form-control" name="author" required>
+        <label title="Enter author's name">Author</label>
+        <input type="text" name="author" class="form-control" required>
       </div>
       <div class="form-group">
-        <label for="quantity">Quantity</label>
-        <input type="number" class="form-control" name="quantity" required>
+        <label title="Enter quantity of this book">Quantity</label>
+        <input type="number" name="quantity" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label title="Select book availability">Status</label>
+        <select name="status" class="form-control">
+          <option value="Available">Available</option>
+          <option value="Issued">Issued</option>
+        </select>
       </div>
       <div class="text-center">
-        <button type="submit" class="btn btn-primary">Add Book</button>
-        <a href="/" class="btn btn-secondary ml-2">Home</a>
+        <button type="submit" class="btn btn-primary" title="Click to add book">Add Book</button>
+        <a href="/" class="btn btn-light" title="Go back to homepage">Cancel</a>
       </div>
     </form>
   </div>
-</div>
+  <footer>
+    &copy; 2025 Library Management System | Made with ❤️ by Manish Saini
+  </footer>
 </body>
 </html>

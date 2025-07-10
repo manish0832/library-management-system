@@ -1,6 +1,2 @@
-1,manish saini,munshi,4,Available
-1,holy book,manish saini,4,Available
-3,python programming,kartik,10,Available
-2,java,manish saini,8,Available
-6,MERN,shiva,10,Available
-8,lal Dupatta,devi,15,Available
+
+5|data science|munshi|7|Available

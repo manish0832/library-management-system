@@ -1,78 +1,112 @@
-from flask import Flask, render_template, request, redirect, jsonify
+from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__)
-BOOKS_FILE = "books.txt"
 
-def read_books():
-    try:
-        with open(BOOKS_FILE, "r") as f:
-            return [line.strip().split(",") for line in f]
-    except FileNotFoundError:
-        return []
+@app.route('/')
+def index():
+    return render_template('index.html')
 
-def write_books(books):
-    with open(BOOKS_FILE, "w") as f:
-        for book in books:
-            f.write(",".join(book) + "\n")
-
-@app.route("/")
-def home():
-    return render_template("index.html")
-
-@app.route("/add", methods=["GET", "POST"])
-def add_book():
-    if request.method == "POST":
-        book = [
-            request.form['id'],
-            request.form['title'],
-            request.form['author'],
-            request.form['quantity'],
-            "Available"
-        ]
-        with open(BOOKS_FILE, "a") as f:
-            f.write(",".join(book) + "\n")
-        return redirect("/view")
-    return render_template("add.html")
-
-@app.route("/view")
-def view_books():
-    books = read_books()
+@app.route('/view')
+def view():
+    with open("books.txt", "r") as f:
+        books = [line.strip().split("|") for line in f.readlines()]
     return render_template("view.html", books=books)
 
-@app.route("/search", methods=["GET"])
-def search():
-    query = request.args.get("q", "").lower()
-    results = [book for book in read_books() if query in book[1].lower() or query in book[2].lower()]
-    return render_template("search.html", books=results, query=query)
-
-@app.route("/issue", methods=["GET", "POST"])
-def issue_book():
-    if request.method == "POST":
+@app.route('/add', methods=['GET', 'POST'])
+def add():
+    if request.method == 'POST':
         book_id = request.form['id']
-        books = read_books()
+        title = request.form['title']
+        author = request.form['author']
+        quantity = request.form['quantity']
+        status = request.form['status']
+        with open("books.txt", "a") as f:
+            f.write(f"{book_id}|{title}|{author}|{quantity}|{status}\n")
+        return redirect('/view')
+    return render_template("add.html")
+
+@app.route('/delete/<book_id>')
+def delete_book(book_id):
+    with open("books.txt", "r") as f:
+        books = f.readlines()
+    with open("books.txt", "w") as f:
         for book in books:
-            if book[0] == book_id and book[4] == "Available" and int(book[3]) > 0:
-                book[3] = str(int(book[3]) - 1)
-                if int(book[3]) == 0:
-                    book[4] = "Issued"
-                write_books(books)
-                return redirect("/view")
-        return "Cannot issue book"
+            if not book.startswith(book_id + "|"):
+                f.write(book)
+    return redirect('/view')
+
+@app.route('/edit/<book_id>', methods=['GET', 'POST'])
+def edit_book(book_id):
+    with open("books.txt", "r") as f:
+        books = f.readlines()
+
+    selected_book = None
+    updated_books = []
+
+    for line in books:
+        if line.startswith(book_id + "|"):
+            selected_book = line.strip().split("|")
+        else:
+            updated_books.append(line)
+
+    if request.method == "POST":
+        title = request.form["title"]
+        author = request.form["author"]
+        quantity = request.form["quantity"]
+        status = request.form["status"]
+        new_line = f"{book_id}|{title}|{author}|{quantity}|{status}\n"
+        updated_books.append(new_line)
+        with open("books.txt", "w") as f:
+            f.writelines(updated_books)
+        return redirect("/view")
+
+    return render_template("edit.html", book=selected_book)
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    results = []
+    if request.method == 'POST':
+        query = request.form['query'].lower()
+        with open("books.txt", "r") as f:
+            for line in f:
+                if query in line.lower():
+                    results.append(line.strip().split("|"))
+        return render_template("view.html", books=results)
+    return render_template("search.html")
+
+@app.route('/issue', methods=['GET', 'POST'])
+def issue():
+    if request.method == 'POST':
+        book_id = request.form['book_id']
+        with open("books.txt", "r") as f:
+            books = f.readlines()
+        updated_books = []
+        for book in books:
+            fields = book.strip().split('|')
+            if fields[0] == book_id and int(fields[3]) > 0:
+                fields[3] = str(int(fields[3]) - 1)
+            updated_books.append("|".join(fields) + "\n")
+        with open("books.txt", "w") as f:
+            f.writelines(updated_books)
+        return redirect('/view')
     return render_template("issue.html")
 
-@app.route("/return", methods=["GET", "POST"])
+@app.route('/return', methods=['GET', 'POST'])
 def return_book():
-    if request.method == "POST":
-        book_id = request.form['id']
-        books = read_books()
+    if request.method == 'POST':
+        book_id = request.form['book_id']
+        with open("books.txt", "r") as f:
+            books = f.readlines()
+        updated_books = []
         for book in books:
-            if book[0] == book_id:
-                book[3] = str(int(book[3]) + 1)
-                book[4] = "Available"
-                write_books(books)
-                return redirect("/view")
-        return "Book not found"
-    return render_template("return.html")
+            fields = book.strip().split('|')
+            if fields[0] == book_id:
+                fields[3] = str(int(fields[3]) + 1)
+            updated_books.append("|".join(fields) + "\n")
+        with open("books.txt", "w") as f:
+            f.writelines(updated_books)
+        return redirect('/view')
+    return render_template("Return.html")
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True)
