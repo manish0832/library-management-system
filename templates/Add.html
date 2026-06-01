@@ -1,105 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Add Book</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-                  url('https://rapi.pixai.art/img/media/384686761749415677/orig') 
-                  no-repeat center center fixed;
-      background-size: cover;
-      color: white;
-    }
-    .card {
-      margin: 100px auto;
-      max-width: 600px;
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-      animation: fadeIn 1.2s ease-in-out;
-    }
-    h2 {
-      font-weight: 600;
-      margin-bottom: 30px;
-      text-shadow: 0 0 10px rgba(255,255,255,0.5);
-      transition: transform 0.3s ease;
-    }
-    h2:hover {
-      transform: scale(1.05);
-    }
-    label {
-      font-weight: 500;
-      text-shadow: 0 0 5px rgba(255,255,255,0.3);
-    }
-    .form-control {
-      border-radius: 10px;
-    }
-    .btn {
-      border-radius: 25px;
-      padding: 10px 20px;
-      font-size: 1.1rem;
-      margin: 5px;
-      transition: all 0.3s ease;
-    }
-    .btn:hover {
-      transform: scale(1.05);
-      opacity: 0.9;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    footer {
-      position: fixed;
-      bottom: 10px;
-      width: 100%;
-      text-align: center;
-      font-size: 0.9rem;
-      color: rgba(255,255,255,0.6);
-    }
-  </style>
-</head>
-<body>
-  <div class="card">
-    <h2 class="text-white text-center" title="Enter details of the book to add it to the library">➕ Add New Book</h2>
-    <form action="/add" method="POST">
+{% extends "base.html" %}
+
+{% block title %}Add Book{% endblock %}
+
+{% block content %}
+<main class="content-shell">
+  <section class="content-card form-card">
+    <p class="eyebrow">Catalog</p>
+    <h1>Add a New Book</h1>
+    <p class="section-copy">Create a clean record for a title you want to track in the library.</p>
+
+    <form action="/add" method="POST" class="library-form">
       <div class="form-group">
-        <label title="Enter unique book ID">ID</label>
-        <input type="text" name="id" class="form-control" required>
+        <label for="id">Book ID</label>
+        <input id="id" type="text" name="id" class="form-control" required>
       </div>
       <div class="form-group">
-        <label title="Enter book title">Title</label>
-        <input type="text" name="title" class="form-control" required>
+        <label for="title">Title</label>
+        <input id="title" type="text" name="title" class="form-control" required>
       </div>
       <div class="form-group">
-        <label title="Enter author's name">Author</label>
-        <input type="text" name="author" class="form-control" required>
+        <label for="author">Author</label>
+        <input id="author" type="text" name="author" class="form-control" required>
       </div>
       <div class="form-group">
-        <label title="Enter quantity of this book">Quantity</label>
-        <input type="number" name="quantity" class="form-control" required>
+        <label for="quantity">Quantity</label>
+        <input id="quantity" type="number" min="0" name="quantity" class="form-control" required>
       </div>
       <div class="form-group">
-        <label title="Select book availability">Status</label>
-        <select name="status" class="form-control">
+        <label for="status">Status</label>
+        <select id="status" name="status" class="form-control">
           <option value="Available">Available</option>
           <option value="Issued">Issued</option>
         </select>
       </div>
-      <div class="text-center">
-        <button type="submit" class="btn btn-primary" title="Click to add book">Add Book</button>
-        <a href="/" class="btn btn-light" title="Go back to homepage">Cancel</a>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Add Book</button>
+        <a href="/" class="btn btn-outline-light">Cancel</a>
       </div>
     </form>
-  </div>
-  <footer>
-    &copy; 2025 Library Management System | Made with ❤️ by Manish Saini
-  </footer>
-</body>
-</html>
+  </section>
+</main>
+{% endblock %}
